@@ -9,14 +9,3 @@ import java.io.Serializable
     var projectId : Long,
     var userId : Long
 ) : Serializable
-//@Embeddable
-//class ProjectMemberId() : Serializable {
-//
-//    var projectId: Long? = null
-//    var userId: Long? = null
-//
-//    constructor(projectId: Long, userId: Long) : this() {
-//        this.projectId = projectId
-//        this.userId = userId
-//    }
-//}

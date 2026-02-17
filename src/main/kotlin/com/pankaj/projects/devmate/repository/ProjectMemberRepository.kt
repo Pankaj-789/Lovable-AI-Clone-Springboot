@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ProjectMemberRepository : JpaRepository<ProjectMember, ProjectMemberId> {
+
+    fun findByIdProjectId(projectId : Long) : List<ProjectMember>
 }

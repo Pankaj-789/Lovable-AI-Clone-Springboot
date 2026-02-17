@@ -7,7 +7,7 @@ data class MemberResponse(
     val userId : Long,
     val email : String,
     val name : String,
-    val avatarUrl : String,
-    val role : ProjectRole,
-    val invitedAt : Instant
+    val avatarUrl : String?,
+    val projectRole : ProjectRole,
+    val invitedAt : Instant?
 )

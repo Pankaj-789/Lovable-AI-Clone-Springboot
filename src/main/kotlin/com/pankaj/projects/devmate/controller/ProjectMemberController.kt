@@ -2,7 +2,6 @@ package com.pankaj.projects.devmate.controller
 
 import com.pankaj.projects.devmate.dto.member.InviteMemberRequest
 import com.pankaj.projects.devmate.dto.member.MemberResponse
-import com.pankaj.projects.devmate.entity.ProjectMember
 import com.pankaj.projects.devmate.service.ProjectMemberService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 class ProjectMemberController(private val projectMemberService: ProjectMemberService) {
 
     @GetMapping
-    fun getProjectMembers(@PathVariable projectId : Long) : ResponseEntity<List<ProjectMember>>{
+    fun getProjectMembers(@PathVariable projectId : Long) : ResponseEntity<List<MemberResponse>>{
         val userId = 1L
         return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId,userId))
     }
@@ -47,7 +46,7 @@ class ProjectMemberController(private val projectMemberService: ProjectMemberSer
     fun deleteProjectMember(@PathVariable projectId : Long,
                          @PathVariable memberId : Long) : ResponseEntity<MemberResponse>{
         val userId = 1L
-        return ResponseEntity.ok(projectMemberService.deleteProjectMember(projectId,memberId,userId))
+        return ResponseEntity.ok(projectMemberService.removeProjectMember(projectId,memberId,userId))
 
     }
 
