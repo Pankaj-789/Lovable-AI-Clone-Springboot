@@ -16,8 +16,10 @@ import java.time.Instant
 
 @Service
 @Transactional
-class ProjectServiceImpl(private val projectRepository: ProjectRepository,
-                         private val userRepository: UserRepository) : ProjectService {
+class ProjectServiceImpl(
+    private val projectRepository: ProjectRepository,
+    private val userRepository: UserRepository
+) : ProjectService {
 
     override fun createProject(request: ProjectRequest, userId: Long): ProjectResponse? {
         val owner = userRepository.findById(userId).orElseThrow()

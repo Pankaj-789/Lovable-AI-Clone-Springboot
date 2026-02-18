@@ -5,14 +5,7 @@ import com.pankaj.projects.devmate.dto.member.MemberResponse
 import com.pankaj.projects.devmate.service.ProjectMemberService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -20,38 +13,43 @@ import org.springframework.web.bind.annotation.RestController
 class ProjectMemberController(private val projectMemberService: ProjectMemberService) {
 
     @GetMapping
-    fun getProjectMembers(@PathVariable projectId : Long) : ResponseEntity<List<MemberResponse>>{
+    fun getProjectMembers(@PathVariable projectId: Long): ResponseEntity<List<MemberResponse>> {
         val userId = 1L
-        return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId,userId))
+        return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId, userId))
     }
 
     @PostMapping
-    fun inviteMember(@PathVariable projectId : Long,@RequestBody request : InviteMemberRequest) : ResponseEntity<MemberResponse>{
+    fun inviteMember(
+        @PathVariable projectId: Long,
+        @RequestBody request: InviteMemberRequest
+    ): ResponseEntity<MemberResponse> {
         val userId = 1L
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            projectMemberService.inviteMember(projectId , request, userId)
+            projectMemberService.inviteMember(projectId, request, userId)
         )
     }
 
     @PatchMapping("/{memberId}")
-    fun updateMemberRole(@PathVariable projectId : Long,
-                         @PathVariable memberId : Long,
-                         @RequestBody request : InviteMemberRequest) : ResponseEntity<MemberResponse>{
+    fun updateMemberRole(
+        @PathVariable projectId: Long,
+        @PathVariable memberId: Long,
+        @RequestBody request: InviteMemberRequest
+    ): ResponseEntity<MemberResponse> {
         val userId = 1L
-        return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId,memberId,request,userId))
+        return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId, memberId, request, userId))
 
     }
 
     @DeleteMapping("/{memberId}")
-    fun deleteProjectMember(@PathVariable projectId : Long,
-                         @PathVariable memberId : Long) : ResponseEntity<MemberResponse>{
+    fun deleteProjectMember(
+        @PathVariable projectId: Long,
+        @PathVariable memberId: Long
+    ): ResponseEntity<Unit> {
         val userId = 1L
-        return ResponseEntity.ok(projectMemberService.removeProjectMember(projectId,memberId,userId))
+        projectMemberService.removeProjectMember(projectId, memberId, userId)
+        return ResponseEntity.noContent().build()
 
     }
-
-
-
 
 
 }

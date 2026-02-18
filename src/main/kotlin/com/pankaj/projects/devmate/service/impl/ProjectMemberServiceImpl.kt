@@ -5,7 +5,6 @@ import com.pankaj.projects.devmate.dto.member.MemberResponse
 import com.pankaj.projects.devmate.entity.Project
 import com.pankaj.projects.devmate.entity.ProjectMember
 import com.pankaj.projects.devmate.entity.ProjectMemberId
-import com.pankaj.projects.devmate.enums.ProjectRole
 import com.pankaj.projects.devmate.mapper.ProjectMemberMapper
 import com.pankaj.projects.devmate.repository.ProjectMemberRepository
 import com.pankaj.projects.devmate.repository.ProjectRepository
@@ -51,7 +50,7 @@ class ProjectMemberServiceImpl(
         val invitee = userRepository.findByEmail(request.email)
 
 //      Prevent owner from inviting himself
-        if (invitee.id == userId){
+        if (invitee.id == userId) {
             throw RuntimeException("Owner cannot invite himself")
 
         }
@@ -63,10 +62,6 @@ class ProjectMemberServiceImpl(
             throw RuntimeException("User already invited to this project")
         }
 
-//        val project = Project(
-//            name = request.name, public = false, owner = owner
-//        )
-//        for valid user
         val member = ProjectMember(
             id = projectMemberId,
             project = project,
@@ -99,11 +94,23 @@ class ProjectMemberServiceImpl(
 
         projectMember.projectRole = request.role
         projectMemberRepository.save(projectMember)
-        return  projectMemberMapper.toProjectMemberResponseFromMember(projectMember)
+        return projectMemberMapper.toProjectMemberResponseFromMember(projectMember)
     }
 
-    override fun removeProjectMember(projectId: Long, memberId: Long, userId: Long): MemberResponse? {
-        TODO("Not yet implemented")
+    override fun removeProjectMember(projectId: Long, memberId: Long, userId: Long) {
+        val project = getAccessibleProjectById(projectId, userId)
+
+//        check for the owner
+        if (project.owner.id != userId) {
+            throw RuntimeException("Not Allowed!! Only owner can invite members")
+        }
+        val projectMemberId = ProjectMemberId(projectId, memberId)
+
+        // check if the project member exist
+        if (!projectMemberRepository.existsById(projectMemberId)) {
+            throw RuntimeException("Member not found in project")
+        }
+        projectMemberRepository.deleteById(projectMemberId)
     }
 
     fun getAccessibleProjectById(projectId: Long, userId: Long): Project {
